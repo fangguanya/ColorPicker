@@ -17,7 +17,7 @@ namespace Ranta.ColorPicker
 
         public static DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(byte), typeof(RantaColor), new PropertyMetadata((byte)0, new PropertyChangedCallback(BluePropertyChanged)));
 
-        public static DependencyProperty ScaleProperty = DependencyProperty.Register("Scale", typeof(string), typeof(RantaColor), new PropertyMetadata("0.2f", new PropertyChangedCallback(ScalePropertyChanged)));
+        public static DependencyProperty ScaleProperty = DependencyProperty.Register("Scale", typeof(string), typeof(RantaColor), new PropertyMetadata("0.2", new PropertyChangedCallback(ScalePropertyChanged)));
         public static DependencyProperty RGBAProperty = DependencyProperty.Register("RGBA", typeof(string), typeof(RantaColor), new PropertyMetadata("1,1,1", new PropertyChangedCallback(RGBAPropertyChanged)));
 
         public event PropertyChangedEventHandler PropertyChanged;
