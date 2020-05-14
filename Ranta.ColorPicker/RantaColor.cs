@@ -17,6 +17,7 @@ namespace Ranta.ColorPicker
 
         public static DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(byte), typeof(RantaColor), new PropertyMetadata((byte)0, new PropertyChangedCallback(BluePropertyChanged)));
 
+        public static DependencyProperty ScaleProperty = DependencyProperty.Register("Scale", typeof(string), typeof(RantaColor), new PropertyMetadata("0.2f", new PropertyChangedCallback(ScalePropertyChanged)));
         public static DependencyProperty RGBAProperty = DependencyProperty.Register("RGBA", typeof(string), typeof(RantaColor), new PropertyMetadata("1,1,1", new PropertyChangedCallback(RGBAPropertyChanged)));
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,6 +27,23 @@ namespace Ranta.ColorPicker
             get
             {
                 return (string)GetValue(RGBAProperty);
+            }
+            set
+            {
+
+            }
+        }
+        public float Scale
+        {
+            get
+            {
+                try
+                {
+                    return float.Parse((string)GetValue(ScaleProperty));
+                }
+                catch (Exception e){
+                    return 1.0f;
+                }
             }
             set
             {
@@ -125,16 +143,40 @@ namespace Ranta.ColorPicker
 
             rantaColor.OnColorChanged();
         }
+        public static void ScalePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RantaColor rantaColor = (RantaColor)d;
+
+            var rgba = rantaColor.RGBA.Split(',');
+            var scale = 1.0f / (rantaColor.Scale > 0 ? rantaColor.Scale : 1.0f);
+            if (rgba.Count() > 2)
+            {
+                byte r = (byte)(float.Parse(rgba[0]) * 255 * scale);
+                byte g = (byte)(float.Parse(rgba[1]) * 255 * scale);
+                byte b = (byte)(float.Parse(rgba[2]) * 255 * scale);
+                rantaColor.color = Color.FromRgb(r, g, b);
+            }
+            else
+            {
+                rantaColor.color = Color.FromRgb(rantaColor.Red, rantaColor.Green, rantaColor.Blue);
+            }
+
+            rantaColor.brush = new SolidColorBrush(rantaColor.color);
+
+            rantaColor.OnColorChanged();
+        }
+        
         public static void RGBAPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             RantaColor rantaColor = (RantaColor)d;
 
             var rgba = rantaColor.RGBA.Split(',');
+            var scale = 1.0f / (rantaColor.Scale > 0 ? rantaColor.Scale : 1.0f);
             if (rgba.Count() > 2)
             {
-                byte r = (byte)(float.Parse(rgba[0]) * 255);
-                byte g = (byte)(float.Parse(rgba[1]) * 255);
-                byte b = (byte)(float.Parse(rgba[2]) * 255);
+                byte r = (byte)(float.Parse(rgba[0]) * 255 * scale);
+                byte g = (byte)(float.Parse(rgba[1]) * 255 * scale);
+                byte b = (byte)(float.Parse(rgba[2]) * 255 * scale);
                 rantaColor.color = Color.FromRgb(r, g, b);
             }
             else
