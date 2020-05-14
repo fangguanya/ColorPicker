@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="ToolWindow"
         ResizeMode="NoResize"
-        Title="ColorPicker" Height="350" Width="594">
+        Title="ColorPicker" Height="355" Width="594">
     <Window.Resources>
         <local:RantaColor x:Key="rantaColor" />
         <local:MyConverter x:Key="myconvert1" />
@@ -21,6 +21,7 @@
             <Ellipse
 				HorizontalAlignment="Left" Height="161" 
 				Margin="197,27,0,0" Stroke="Black" VerticalAlignment="Top" Width="161" Fill="{Binding Brush, Mode=OneWay, Source={StaticResource rantaColor}}"/>
+            <TextBox x:Name="colorText" HorizontalAlignment="Left" Height="23" Margin="445,165,0,0" TextWrapping="Wrap" Text="{Binding RGBA, Source={StaticResource rantaColor}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="133"/>
         </Grid>
         <Grid Grid.Row="1" Background="LightCyan">
             <Grid.Resources>

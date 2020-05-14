@@ -17,7 +17,21 @@ namespace Ranta.ColorPicker
 
         public static DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(byte), typeof(RantaColor), new PropertyMetadata((byte)0, new PropertyChangedCallback(BluePropertyChanged)));
 
+        public static DependencyProperty RGBAProperty = DependencyProperty.Register("RGBA", typeof(string), typeof(RantaColor), new PropertyMetadata("1,1,1", new PropertyChangedCallback(RGBAPropertyChanged)));
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string RGBA
+        {
+            get
+            {
+                return (string)GetValue(RGBAProperty);
+            }
+            set
+            {
+
+            }
+        }
 
         public byte Red
         {
@@ -106,6 +120,27 @@ namespace Ranta.ColorPicker
             RantaColor rantaColor = (RantaColor)d;
 
             rantaColor.color = Color.FromRgb(rantaColor.Red, rantaColor.Green, rantaColor.Blue);
+
+            rantaColor.brush = new SolidColorBrush(rantaColor.color);
+
+            rantaColor.OnColorChanged();
+        }
+        public static void RGBAPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            RantaColor rantaColor = (RantaColor)d;
+
+            var rgba = rantaColor.RGBA.Split(',');
+            if (rgba.Count() > 2)
+            {
+                byte r = (byte)(float.Parse(rgba[0]) * 255);
+                byte g = (byte)(float.Parse(rgba[1]) * 255);
+                byte b = (byte)(float.Parse(rgba[2]) * 255);
+                rantaColor.color = Color.FromRgb(r, g, b);
+            }
+            else
+            {
+                rantaColor.color = Color.FromRgb(rantaColor.Red, rantaColor.Green, rantaColor.Blue);
+            }
 
             rantaColor.brush = new SolidColorBrush(rantaColor.color);
 
